@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { Users, FileText, Bell, BarChart2, PlusCircle, CheckCircle } from 'lucide-react';
+import { Users, FileText, Bell, BarChart2, PlusCircle, CheckCircle, AlertTriangle } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);

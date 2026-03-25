@@ -4,6 +4,21 @@ import { Link } from 'react-router-dom';
 import { BookOpen, Map, ShieldAlert, Activity, ChevronRight } from 'lucide-react';
 import axios from 'axios';
 
+const getCategoryImageUrl = (category) => {
+  switch (category?.toLowerCase()) {
+    case 'earthquake':
+      return 'https://images.unsplash.com/photo-1601584856086-621434c441ed?auto=format&fit=crop&q=80&w=800';
+    case 'flood':
+      return 'https://images.unsplash.com/photo-1547683905-f30e618a39ef?auto=format&fit=crop&q=80&w=800';
+    case 'fire':
+      return 'https://images.unsplash.com/photo-1627916568853-90d291ad8106?auto=format&fit=crop&q=80&w=800';
+    case 'cyclone':
+      return 'https://images.unsplash.com/photo-1527482837616-92896a75f284?auto=format&fit=crop&q=80&w=800';
+    default:
+      return 'https://images.unsplash.com/photo-1532996122724-e3c3552a4cd3?auto=format&fit=crop&q=80&w=800';
+  }
+};
+
 const StudentDashboard = () => {
   const { user } = useContext(AuthContext);
   const [recentLessons, setRecentLessons] = useState([]);
@@ -70,32 +85,43 @@ const StudentDashboard = () => {
             <Activity className="h-6 w-6 mr-2 text-indigo-500" />
             Latest Modules
           </h2>
-          <Link to="/learn" className="text-sm font-medium text-indigo-600 hover:text-indigo-800">
-            View all &rarr;
+          <Link to="/learn" className="text-sm font-medium text-indigo-600 hover:text-indigo-800 flex items-center">
+            View all <ChevronRight className="h-4 w-4 ml-1" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recentLessons.map((lesson) => (
-            <div key={lesson._id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-              <div className="h-32 bg-slate-100 relative">
-                {/* Fallback pattern */}
-                <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#CBD5E1_1px,transparent_1px)] [background-size:16px_16px]"></div>
+            <div key={lesson._id} className="group bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
+              <div className="h-48 relative overflow-hidden">
+                <img 
+                  src={getCategoryImageUrl(lesson.category)} 
+                  alt={lesson.title} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = `https://picsum.photos/seed/${lesson._id}/800/600`;
+                  }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-sm text-indigo-600 font-bold flex items-center gap-1 text-xs pr-3">
+                  <Activity className="w-4 h-4" /> <span>Quiz</span>
+                </div>
                 <div className="absolute bottom-4 left-4">
-                  <span className="px-3 py-1 bg-white text-xs font-bold uppercase tracking-wider rounded-full shadow-sm">
+                  <span className="px-3 py-1 bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider rounded-md shadow-sm">
                     {lesson.category}
                   </span>
                 </div>
               </div>
-              <div className="p-5">
-                <h3 className="font-bold text-lg text-slate-900 mb-2 truncate">{lesson.title}</h3>
-                <p className="text-slate-600 text-sm line-clamp-2">{lesson.description}</p>
-                <div className="mt-4">
+              <div className="p-5 flex-1 flex flex-col">
+                <h3 className="font-bold text-lg text-slate-900 mb-2 line-clamp-1">{lesson.title}</h3>
+                <p className="text-slate-500 text-sm line-clamp-2 mb-4 flex-1">{lesson.description}</p>
+                <div className="mt-auto pt-4 border-t border-slate-100">
                   <Link
                     to={`/quiz/${lesson._id}`}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 w-full justify-center"
+                    className="inline-flex items-center px-4 py-2.5 border border-transparent text-sm font-bold rounded-xl shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 w-full justify-center transition-colors shadow-indigo-200"
                   >
-                    Start Lesson
+                    Take Quiz & Learn
                   </Link>
                 </div>
               </div>

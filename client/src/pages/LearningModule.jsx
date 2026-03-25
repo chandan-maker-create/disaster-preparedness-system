@@ -12,6 +12,21 @@ const icons = {
   general: <BookOpen className="text-indigo-500 w-8 h-8" />,
 };
 
+const getCategoryImageUrl = (category) => {
+  switch (category?.toLowerCase()) {
+    case 'earthquake':
+      return 'https://images.unsplash.com/photo-1601584856086-621434c441ed?auto=format&fit=crop&q=80&w=800';
+    case 'flood':
+      return 'https://images.unsplash.com/photo-1547683905-f30e618a39ef?auto=format&fit=crop&q=80&w=800';
+    case 'fire':
+      return 'https://images.unsplash.com/photo-1627916568853-90d291ad8106?auto=format&fit=crop&q=80&w=800';
+    case 'cyclone':
+      return 'https://images.unsplash.com/photo-1527482837616-92896a75f284?auto=format&fit=crop&q=80&w=800';
+    default:
+      return 'https://images.unsplash.com/photo-1532996122724-e3c3552a4cd3?auto=format&fit=crop&q=80&w=800';
+  }
+};
+
 const LearningModule = () => {
   const { user } = useContext(AuthContext);
   const [lessons, setLessons] = useState([]);
@@ -35,7 +50,9 @@ const LearningModule = () => {
 
   const categories = ['all', 'earthquake', 'flood', 'fire', 'cyclone', 'general'];
 
-  const filteredLessons = activeTab === 'all' ? lessons : lessons.filter(l => l.category === activeTab);
+  const filteredLessons = activeTab === 'all' 
+    ? lessons 
+    : lessons.filter(l => (l.category || 'general').toLowerCase() === activeTab.toLowerCase());
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -65,31 +82,45 @@ const LearningModule = () => {
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {filteredLessons.map((lesson) => (
-          <div key={lesson._id} className="flex flex-col rounded-2xl shadow-lg border border-slate-100 overflow-hidden bg-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
-            <div className="flex-shrink-0 h-48 bg-slate-50 flex flex-col items-center justify-center p-6 relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-100 to-slate-200 opacity-50"></div>
-              <div className="relative z-10 w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mb-3">
+          <div key={lesson._id} className="group flex flex-col rounded-2xl shadow-sm border border-slate-200 overflow-hidden bg-white hover:-translate-y-1 hover:shadow-xl transition-all duration-300">
+            <div className="flex-shrink-0 h-48 relative overflow-hidden flex flex-col items-center justify-center p-6">
+              <img 
+                src={getCategoryImageUrl(lesson.category)} 
+                alt={lesson.title} 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = `https://picsum.photos/seed/${lesson._id}/800/600`;
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-slate-900/10 mix-blend-multiply"></div>
+              
+              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-sm text-indigo-600 font-bold flex items-center gap-1 text-xs pr-3 z-10">
+                <Award className="w-4 h-4" /> <span>Quiz Inside</span>
+              </div>
+              
+              <div className="relative z-10 w-16 h-16 bg-white/20 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center mb-3 border border-white/30">
                 {icons[lesson.category] || icons['general']}
               </div>
-              <span className="relative z-10 px-3 py-1 bg-white text-xs font-bold uppercase tracking-wider rounded-full shadow-sm text-slate-700">
+              <span className="relative z-10 px-3 py-1 bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider rounded-md shadow-sm">
                 {lesson.category}
               </span>
             </div>
             
             <div className="flex-1 bg-white p-6 flex flex-col justify-between">
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-slate-900">{lesson.title}</h3>
+                <h3 className="text-xl font-bold text-slate-900 line-clamp-1">{lesson.title}</h3>
                 <p className="mt-3 text-base text-slate-500 line-clamp-3">
                   {lesson.description}
                 </p>
               </div>
-              <div className="mt-6 flex items-center gap-3">
+              <div className="mt-6 flex items-center gap-3 pt-4 border-t border-slate-100">
                 <Link
                   to={`/quiz/${lesson._id}`}
-                  className="flex-1 flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm"
+                  className="flex-1 flex justify-center items-center px-4 py-2.5 border border-transparent text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm shadow-indigo-200 transition-colors"
                 >
                   <BookOpen className="w-4 h-4 mr-2" />
-                  Read Module
+                  Take Quiz & Learn
                 </Link>
               </div>
             </div>

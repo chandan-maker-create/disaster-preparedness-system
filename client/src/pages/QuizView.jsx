@@ -4,6 +4,16 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { CheckCircle, XCircle, ArrowRight, BookOpen, AlertCircle } from 'lucide-react';
 
+const getEmbedUrl = (url) => {
+  if (!url) return '';
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  if (match && match[2].length === 11) {
+    return `https://www.youtube.com/embed/${match[2]}`;
+  }
+  return url;
+};
+
 const QuizView = () => {
   const { contentId } = useParams();
   const { user } = useContext(AuthContext);
@@ -84,7 +94,7 @@ const QuizView = () => {
               <h3 className="text-xl font-bold mb-4">Educational Video</h3>
               <div className="aspect-w-16 aspect-h-9">
                 <iframe
-                  src={content.videoUrl}
+                  src={getEmbedUrl(content.videoUrl)}
                   title="Video"
                   className="w-full h-96 rounded-xl"
                   allowFullScreen
@@ -139,6 +149,19 @@ const QuizView = () => {
              <p key={i} className="mb-4">{paragraph}</p>
           ))}
         </div>
+        {content.videoUrl && (
+          <div className="mt-8">
+            <h3 className="text-xl font-bold mb-4">Educational Video</h3>
+            <div className="aspect-w-16 aspect-h-9">
+              <iframe
+                src={getEmbedUrl(content.videoUrl)}
+                title="Video"
+                className="w-full h-96 rounded-xl"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Quiz Column */}
