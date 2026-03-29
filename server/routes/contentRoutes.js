@@ -8,7 +8,7 @@ const router = express.Router();
 // @route   GET /api/content
 // @desc    Get all learning contents
 // @access  Public (or Student)
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const contents = await Content.find({}).populate('createdBy', 'name');
     res.json(contents);
@@ -20,7 +20,7 @@ router.get('/', protect, async (req, res) => {
 // @route   GET /api/content/:id
 // @desc    Get single learning content by ID
 // @access  Public (or Student)
-router.get('/:id', protect, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const content = await Content.findById(req.params.id);
     if (!content) {
