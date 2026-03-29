@@ -1,0 +1,30 @@
+{
+  "srv": [
+    {
+      "name": "ac-q032qko-shard-00-01.7keuitr.mongodb.net",
+      "port": 27017,
+      "priority": 0,
+      "weight": 0,
+      "type": "SRV"
+    },
+    {
+      "name": "ac-q032qko-shard-00-02.7keuitr.mongodb.net",
+      "port": 27017,
+      "priority": 0,
+      "weight": 0,
+      "type": "SRV"
+    },
+    {
+      "name": "ac-q032qko-shard-00-00.7keuitr.mongodb.net",
+      "port": 27017,
+      "priority": 0,
+      "weight": 0,
+      "type": "SRV"
+    }
+  ],
+  "txt": [
+    [
+      "authSource=admin&replicaSet=atlas-wjv15n-shard-0"
+    ]
+  ]
+}
