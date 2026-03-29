@@ -18,7 +18,7 @@ import MapView from './pages/MapView';
 
 // Axios defaults
 import axios from 'axios';
-axios.defaults.baseURL = 'https://disaster-preparedness-system-ru0g.onrender.com';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user } = useContext(AuthContext);
