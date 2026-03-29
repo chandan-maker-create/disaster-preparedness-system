@@ -18,7 +18,7 @@ import MapView from './pages/MapView';
 
 // Axios defaults
 import axios from 'axios';
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = 'https://disaster-preparedness-system-ru0g.onrender.com';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const { user } = useContext(AuthContext);
@@ -49,7 +49,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              
+
               <Route
                 path="/learn"
                 element={
@@ -58,7 +58,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              
+
               <Route
                 path="/quiz/:contentId"
                 element={
@@ -67,7 +67,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              
+
               <Route
                 path="/report"
                 element={
@@ -76,7 +76,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              
+
               <Route
                 path="/map"
                 element={
@@ -95,7 +95,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              
+
               {/* Fallback */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
