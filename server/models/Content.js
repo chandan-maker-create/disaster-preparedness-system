@@ -17,7 +17,10 @@ const contentSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { 
+    timestamps: true,
+    collection: 'contents'
+  }
 );
 
 const Content = mongoose.model('Content', contentSchema);

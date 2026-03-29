@@ -13,7 +13,8 @@ router.get('/', async (req, res) => {
     const contents = await Content.find({}).populate('createdBy', 'name');
     res.json(contents);
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error fetching contents:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
@@ -29,7 +30,8 @@ router.get('/:id', async (req, res) => {
     const quizzes = await Quiz.find({ contentId: req.params.id });
     res.json({ content, quizzes });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error fetching single content:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
