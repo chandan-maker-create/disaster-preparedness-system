@@ -21,11 +21,11 @@ connectDB();
 // Initialize app
 const app = express();
 
-// ✅ CORS Configuration
+// ✅ FIXED CORS (IMPORTANT)
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://chandan-maker-create-disaster-prepared.vercel.app"
+    "https://chandan-maker-create-disaster-prepa.vercel.app"
   ],
   credentials: true
 }));
@@ -39,12 +39,12 @@ app.use('/api/content', contentRoutes);
 app.use('/api/alerts', alertRoutes);
 app.use('/api/reports', reportRoutes);
 
-// Test route (optional but useful)
+// Test route
 app.get('/', (req, res) => {
   res.send("API is running...");
 });
 
-// Admin analytics route
+// Admin analytics
 app.get('/api/admin/analytics', async (req, res) => {
   try {
     const userCount = await User.countDocuments();
@@ -62,7 +62,7 @@ app.get('/api/admin/analytics', async (req, res) => {
   }
 });
 
-// Handle unknown routes
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
